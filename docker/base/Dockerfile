@@ -33,7 +33,9 @@ RUN \
     gcc-6-multilib gcc-7-multilib g++-6-multilib gcc-mingw-w64 g++-mingw-w64 clang llvm-dev \
     libtool libxml2-dev uuid-dev libssl-dev swig openjdk-8-jdk pkg-config patch          \
     make xz-utils cpio wget zip unzip p7zip git mercurial bzr texinfo help2man cmake     \
+    libc6-i386 lib32stdc++6 lib32gcc1 lib32z1                                            \
     --no-install-recommends
+
 
 # Fix any stock package issues
 RUN ln -s /usr/include/asm-generic /usr/include/asm
@@ -42,88 +44,80 @@ RUN ln -s /usr/include/asm-generic /usr/include/asm
 ADD patches /patches
 
 # Configure the container for OSX cross compilation
-ENV OSX_SDK     MacOSX10.11.sdk
-ENV OSX_NDK_X86 /usr/local/osx-ndk-x86
+# ENV OSX_SDK     MacOSX10.11.sdk
+# ENV OSX_NDK_X86 /usr/local/osx-ndk-x86
 
-RUN \
-  OSX_SDK_PATH=https://s3.dockerproject.org/darwin/v2/$OSX_SDK.tar.xz && \
-  $FETCH $OSX_SDK_PATH dd228a335194e3392f1904ce49aff1b1da26ca62       && \
-  tar -xf `basename $OSX_SDK_PATH` && rm -f `basename $OSX_SDK_PATH`
+# RUN \
+#   OSX_SDK_PATH=https://s3.dockerproject.org/darwin/v2/$OSX_SDK.tar.xz && \
+#   $FETCH $OSX_SDK_PATH dd228a335194e3392f1904ce49aff1b1da26ca62       && \
+#   tar -xf `basename $OSX_SDK_PATH` && rm -f `basename $OSX_SDK_PATH`
 
-ADD patch.tar.xz $OSX_SDK/usr/include/c++
+# ADD patch.tar.xz $OSX_SDK/usr/include/c++
 
-RUN tar -cf - $OSX_SDK/ | xz -c - > $OSX_SDK.tar.xz && rm -rf $OSX_SDK
+# RUN tar -cf - $OSX_SDK/ | xz -c - > $OSX_SDK.tar.xz && rm -rf $OSX_SDK
 
-RUN  \
-  git clone https://github.com/tpoechtrager/osxcross.git && \
-  mv  $OSX_SDK.tar.xz /osxcross/tarballs/        && \
-  \
-  sed -i -e 's|-march=native||g' /osxcross/build_clang.sh /osxcross/wrapper/build.sh && \
-  UNATTENDED=yes OSX_VERSION_MIN=10.10 /osxcross/build.sh                             && \
-  mv /osxcross/target $OSX_NDK_X86                                                   && \
-  \
-  rm -rf /osxcross
+# RUN  \
+#   git clone https://github.com/tpoechtrager/osxcross.git && \
+#   mv  $OSX_SDK.tar.xz /osxcross/tarballs/        && \
+#   \
+#   sed -i -e 's|-march=native||g' /osxcross/build_clang.sh /osxcross/wrapper/build.sh && \
+#   UNATTENDED=yes OSX_VERSION_MIN=10.10 /osxcross/build.sh                             && \
+#   mv /osxcross/target $OSX_NDK_X86                                                   && \
+#   \
+#   rm -rf /osxcross
 
-ENV PATH $OSX_NDK_X86/bin:$PATH
-ENV LD_LIBRARY_PATH=$OSX_NDK_X86/lib/:$LD_LIBRARY_PATH
+# ENV PATH $OSX_NDK_X86/bin:$PATH
+# ENV LD_LIBRARY_PATH=$OSX_NDK_X86/lib/:$LD_LIBRARY_PATH
 
 
 # Configure the container for iOS cross compilation
-ENV IOS_NDK_ARM_7     /usr/local/ios-ndk-arm-7
-ENV IOS_NDK_ARM64     /usr/local/ios-ndk-arm64
-ENV IOS_SIM_NDK_AMD64 /usr/local/ios-sim-ndk-amd64
+# ENV IOS_NDK_ARM_7     /usr/local/ios-ndk-arm-7
+# ENV IOS_NDK_ARM64     /usr/local/ios-ndk-arm64
+# ENV IOS_SIM_NDK_AMD64 /usr/local/ios-sim-ndk-amd64
 
-ADD update_ios.sh /update_ios.sh
-ENV UPDATE_IOS /update_ios.sh
-RUN chmod +x $UPDATE_IOS
+# ADD update_ios.sh /update_ios.sh
+# ENV UPDATE_IOS /update_ios.sh
+# RUN chmod +x $UPDATE_IOS
 
-RUN \
-  IOS_SDK_FILE=iPhoneOS10.3.sdk.zip && \
-  IOS_SDK_PATH=http://resources.airnativeextensions.com/ios/$IOS_SDK_FILE         && \
-  $FETCH $IOS_SDK_PATH 7745815cd13d9b44c4cb0a2a40715e5410330233300ce4ff0ce106da17a636e8 && \
-  mv `basename $IOS_SDK_PATH` iPhoneOS10.3.sdk.tmp.zip           && \
-  $UPDATE_IOS /iPhoneOS10.3.sdk.tmp.zip                          && \
-  rm -rf /iPhoneOS10.3.sdk.tmp.zip  && \
-  cp -r /usr/local/osx-ndk-x86/SDK/MacOSX10.11.sdk/usr/include/c++/v1 /usr/local/ios-ndk-arm64/SDK/iPhoneOS10.3.sdk/usr/include/c++
+# RUN \
+#   IOS_SDK_FILE=iPhoneOS10.3.sdk.zip && \
+#   IOS_SDK_PATH=http://resources.airnativeextensions.com/ios/$IOS_SDK_FILE         && \
+#   $FETCH $IOS_SDK_PATH 7745815cd13d9b44c4cb0a2a40715e5410330233300ce4ff0ce106da17a636e8 && \
+#   mv `basename $IOS_SDK_PATH` iPhoneOS10.3.sdk.tmp.zip           && \
+#   $UPDATE_IOS /iPhoneOS10.3.sdk.tmp.zip                          && \
+#   rm -rf /iPhoneOS10.3.sdk.tmp.zip  && \
+#   cp -r /usr/local/osx-ndk-x86/SDK/MacOSX10.11.sdk/usr/include/c++/v1 /usr/local/ios-ndk-arm64/SDK/iPhoneOS10.3.sdk/usr/include/c++
 
-ENV PATH $IOS_NDK_ARM64/bin:$PATH
-ENV LD_LIBRARY_PATH $IOS_NDK_ARM64/lib/:$LD_LIBRARY_PATH
+# ENV PATH $IOS_NDK_ARM64/bin:$PATH
+# ENV LD_LIBRARY_PATH $IOS_NDK_ARM64/lib/:$LD_LIBRARY_PATH
 
 # Configure the container for Android cross compilation
-ENV ANDROID_NDK         android-ndk-r13b
+ENV ANDROID_NDK         android-ndk-r19c
 ENV ANDROID_NDK_PATH    http://dl.google.com/android/repository/$ANDROID_NDK-linux-x86_64.zip
 ENV ANDROID_NDK_ROOT    /usr/local/$ANDROID_NDK
-ENV ANDROID_NDK_LIBC    $ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.9
-ENV ANDROID_PLATFORM    21
-ENV ANDROID_CHAIN_ARM   arm-linux-androideabi-4.9
-ENV ANDROID_CHAIN_ARM64 aarch64-linux-android-4.9
-ENV ANDROID_CHAIN_AMD64 x86_64-4.9
-ENV ANDROID_CHAIN_386   x86-4.9
+# ENV ANDROID_NDK_LIBC    $ANDROID_NDK_ROOT/sources/cxx-stl/llvm-libc++
+# ENV ANDROID_PLATFORM    28
+# ENV ANDROID_CHAIN_ARM   arm-linux-androideabi-4.9
+# ENV ANDROID_CHAIN_ARM64 aarch64-linux-android-4.9
+# ENV ANDROID_CHAIN_AMD64 x86_64-4.9
+# ENV ANDROID_CHAIN_386   x86-4.9
+ENV ANDROID_NDK_HOME=/usr/local/$ANDROID_NDK
+
+# RUN \
+#   $FETCH $ANDROID_NDK_PATH 8665fc84a1b1f0d6ab3b5fdd1e30200cc7b9adff && \
+#   unzip `basename $ANDROID_NDK_PATH` -d /usr/local > /dev/null && \
+#   rm -f `basename $ANDROID_NDK_PATH`
 
 RUN \
-  $FETCH $ANDROID_NDK_PATH 0600157c4ddf50ec15b8a037cfc474143f718fd0 && \
-  unzip `basename $ANDROID_NDK_PATH` \
-    "$ANDROID_NDK/build/*"                                           \
-    "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/include/*"       \
-    "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi*/*" \
-    "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64*/*"   \
-    "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64/*"   \
-    "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86/*"      \
-    "$ANDROID_NDK/prebuilt/linux-x86_64/*"                           \
-    "$ANDROID_NDK/platforms/*/arch-arm/*"                            \
-    "$ANDROID_NDK/platforms/*/arch-arm64/*"                          \
-    "$ANDROID_NDK/platforms/*/arch-x86_64/*"                         \
-    "$ANDROID_NDK/platforms/*/arch-x86/*"                            \
-    "$ANDROID_NDK/toolchains/llvm/*"                                 \
-    "$ANDROID_NDK/toolchains/$ANDROID_CHAIN_ARM/*"                   \
-    "$ANDROID_NDK/toolchains/$ANDROID_CHAIN_ARM64/*"                 \
-    "$ANDROID_NDK/toolchains/$ANDROID_CHAIN_386/*"                   \
-    "$ANDROID_NDK/toolchains/$ANDROID_CHAIN_AMD64/*" -d /usr/local > /dev/null && \
+  $FETCH $ANDROID_NDK_PATH fd94d0be6017c6acbd193eb95e09cf4b6f61b834 && \
+  unzip `basename $ANDROID_NDK_PATH` -d /usr/local > /dev/null && \
   rm -f `basename $ANDROID_NDK_PATH`
 
-ENV PATH /usr/$ANDROID_CHAIN_ARM/bin:$PATH
-ENV PATH /usr/$ANDROID_CHAIN_ARM64/bin:$PATH
-ENV PATH /usr/$ANDROID_CHAIN_AMD64/bin:$PATH
+
+# ENV PATH /usr/$ANDROID_CHAIN_ARM/bin:$PATH
+# ENV PATH /usr/$ANDROID_CHAIN_ARM64/bin:$PATH
+# ENV PATH /usr/$ANDROID_CHAIN_AMD64/bin:$PATH
+# ENV PATH $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
 
 # setup Android SDK tooling too
 ENV ANDROID_SDK_PATH https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
@@ -134,7 +128,7 @@ RUN \
     unzip `basename $ANDROID_SDK_PATH` \
         -d $ANDROID_HOME > /dev/null && \
     rm -f `basename $ANDROID_SDK_PATH` && \
-    echo "Y" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-21" "platforms;android-16"
+    echo "Y" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-28" "platforms;android-16"
 
 # Inject the old Go package downloader and tool-chain bootstrapper
 ADD bootstrap.sh /bootstrap.sh
