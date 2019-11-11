@@ -92,7 +92,7 @@ ADD patches /patches
 # ENV LD_LIBRARY_PATH $IOS_NDK_ARM64/lib/:$LD_LIBRARY_PATH
 
 # Configure the container for Android cross compilation
-ENV ANDROID_NDK         android-ndk-r19c
+ENV ANDROID_NDK         android-ndk-r20b
 ENV ANDROID_NDK_PATH    http://dl.google.com/android/repository/$ANDROID_NDK-linux-x86_64.zip
 ENV ANDROID_NDK_ROOT    /usr/local/$ANDROID_NDK
 # ENV ANDROID_NDK_LIBC    $ANDROID_NDK_ROOT/sources/cxx-stl/llvm-libc++
@@ -109,7 +109,7 @@ ENV ANDROID_NDK_HOME=/usr/local/$ANDROID_NDK
 #   rm -f `basename $ANDROID_NDK_PATH`
 
 RUN \
-  $FETCH $ANDROID_NDK_PATH fd94d0be6017c6acbd193eb95e09cf4b6f61b834 && \
+  $FETCH $ANDROID_NDK_PATH d903fdf077039ad9331fb6c3bee78aa46d45527b && \
   unzip `basename $ANDROID_NDK_PATH` -d /usr/local > /dev/null && \
   rm -f `basename $ANDROID_NDK_PATH`
 
