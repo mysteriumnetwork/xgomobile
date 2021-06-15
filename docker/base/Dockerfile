@@ -42,7 +42,7 @@ RUN ln -s /usr/include/asm-generic /usr/include/asm
 ADD patches /patches
 
 # Configure the container for Android cross compilation
-ENV ANDROID_NDK         android-ndk-r19c
+ENV ANDROID_NDK         android-ndk-r21e
 ENV ANDROID_NDK_PATH    http://dl.google.com/android/repository/$ANDROID_NDK-linux-x86_64.zip
 ENV ANDROID_NDK_ROOT    /usr/local/$ANDROID_NDK
 ENV ANDROID_NDK_HOME    $ANDROID_NDK_ROOT
@@ -54,7 +54,7 @@ ENV ANDROID_CHAIN_AMD64 x86_64-4.9
 ENV ANDROID_CHAIN_386   x86-4.9
 
 RUN \
-  $FETCH $ANDROID_NDK_PATH fd94d0be6017c6acbd193eb95e09cf4b6f61b834 && \
+  $FETCH $ANDROID_NDK_PATH c3ebc83c96a4d7f539bd72c241b2be9dcd29bda9 && \
   unzip `basename $ANDROID_NDK_PATH` \
     "$ANDROID_NDK/build/*"                                           \
     "$ANDROID_NDK/sources/cxx-stl/llvm-libc++/include/*"       \

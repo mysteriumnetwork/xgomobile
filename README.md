@@ -33,7 +33,7 @@ If you add new go version only when build and push.
 
 Build new image.
 ```
-docker build -t mysteriumnetwork/xgomobile:1.13.8 -f ./docker/go-1.13.8/Dockerfile .
+docker build -t mysteriumnetwork/xgomobile:1.13.15 -f ./docker/go-1.13.15/Dockerfile .
 ```
 
 Update and run tests.
@@ -43,5 +43,5 @@ Update and run tests.
 
 Push image
 ```
-docker push mysteriumnetwork/xgomobile:1.13.8
+docker push mysteriumnetwork/xgomobile:1.13.15
 ```
