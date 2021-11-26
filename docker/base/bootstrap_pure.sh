@@ -23,8 +23,6 @@ if [ "$GOROOT" == "" ]; then
   rm -f `basename $ROOT_DIST`
 
   export GOROOT=/usr/local/go
-
-  cat /patches/goruntime-*.diff | patch -p1 -f -N -r- -d "$GOROOT"
 fi
 export GOROOT_BOOTSTRAP=$GOROOT
 
@@ -53,11 +51,10 @@ fi
 
 # Install gomobile tool for android/ios frameworks
 echo "Installing gomobile..."
-go get -u golang.org/x/mobile/cmd/gomobile
-cd /go/src/golang.org/x/mobile
-git checkout 3c8601c510d0503ac84d1e5cb8e24de550201dea
-go build ./cmd/gobind && mv ./gobind /usr/bin/
-go build ./cmd/gomobile && mv ./gomobile /usr/bin/
+go install golang.org/x/mobile/cmd/gomobile@latest
+go install golang.org/x/mobile/cmd/gobind@latest
+install "$(go env GOPATH)"/bin/gobind /usr/bin/
+install "$(go env GOPATH)"/bin/gomobile /usr/bin/
 
 # use prebuilt toolchains
 # /usr/bin/gomobile init -ndk /usr/local/android-ndk-r13b/
