@@ -11,4 +11,4 @@ docker run --rm \
     -e FLAG_RACE=false \
     -e FLAG_BUILDMODE=default \
     -e TARGETS=android/. \
-    mysteriumnetwork/xgomobile:1.13.15 ./testlib
+    mysteriumnetwork/xgomobile:1.17.3 ./testlib
