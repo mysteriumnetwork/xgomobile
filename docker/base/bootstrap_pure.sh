@@ -51,11 +51,11 @@ fi
 
 # Install gomobile tool for android/ios frameworks
 echo "Installing gomobile..."
-go install golang.org/x/mobile/cmd/gomobile@latest
-go install golang.org/x/mobile/cmd/gobind@latest
-install "$(go env GOPATH)"/bin/gobind /usr/bin/
-install "$(go env GOPATH)"/bin/gomobile /usr/bin/
+GO111MODULE=off go get -u golang.org/x/mobile/cmd/gomobile
+cd /go/src/golang.org/x/mobile
+go install ./cmd/gomobile
+go install ./cmd/gobind
+ln -svt /usr/bin "$(go env GOPATH)"/bin/gomobile
+ln -svt /usr/bin "$(go env GOPATH)"/bin/gobind
 
-# use prebuilt toolchains
-# /usr/bin/gomobile init -ndk /usr/local/android-ndk-r13b/
-/usr/bin/gomobile version
+gomobile version
