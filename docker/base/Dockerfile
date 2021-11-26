@@ -38,9 +38,6 @@ RUN \
 # Fix any stock package issues
 RUN ln -s /usr/include/asm-generic /usr/include/asm
 
-# Add patches directory for patching later
-ADD patches /patches
-
 # Configure the container for Android cross compilation
 ENV ANDROID_NDK         android-ndk-r21e
 ENV ANDROID_NDK_PATH    http://dl.google.com/android/repository/$ANDROID_NDK-linux-x86_64.zip
