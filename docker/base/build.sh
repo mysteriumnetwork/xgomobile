@@ -74,7 +74,7 @@ for TARGET in $TARGETS; do
     # Ignore android versions etc. build only archive and sources
     # Android api will be 21 for arm64, 16 for arm-a7v
     # Archive will be for both amd64,x86 and arm64, arm 7
-    $GOMOBILE bind --target=android/arm64,android/arm,android/amd64,android/386 $X $V "${T[@]}" --ldflags="$V $LD" -o "/build/$NAME.aar" ./$PACK_RELPATH
+    $GOMOBILE bind --target=android/arm64,android/arm,android/amd64,android/386 -androidapi 21 $X $V "${T[@]}" --ldflags="$V $LD" -o "/build/$NAME.aar" ./$PACK_RELPATH
   fi
 
   # Check and build for iOS targets
@@ -85,7 +85,7 @@ for TARGET in $TARGETS; do
       PLATFORM=10.3 #min ios version to build for
     fi
 
-    $GOMOBILE bind --target=ios/arm64 -iosversion=$PLATFORM $X $V "${T[@]}" --ldflags="$V $LD" -o "/build/$NAME.framework" ./$PACK_RELPATH
+    $GOMOBILE bind --target=ios/arm64 -androidapi 21 -iosversion=$PLATFORM $X $V "${T[@]}" --ldflags="$V $LD" -o "/build/$NAME.framework" ./$PACK_RELPATH
   fi
 done
 
