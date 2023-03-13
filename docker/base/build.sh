@@ -76,17 +76,6 @@ for TARGET in $TARGETS; do
     # Archive will be for both amd64,x86 and arm64, arm 7
     $GOMOBILE bind --target=android/arm64,android/arm,android/amd64,android/386 -androidapi 21 $X $V "${T[@]}" --ldflags="$V $LD" -o "/build/$NAME.aar" ./$PACK_RELPATH
   fi
-
-  # Check and build for iOS targets
-  if [ $XGOOS == "." ] || [[ $XGOOS == ios* ]]; then
-    # Split the platform version and configure the deployment target
-    PLATFORM=`echo $XGOOS | cut -d '-' -f 2`
-    if [ "$PLATFORM" == "" ] || [ "$PLATFORM" == "." ] || [ "$PLATFORM" == "ios" ]; then
-      PLATFORM=10.3 #min ios version to build for
-    fi
-
-    $GOMOBILE bind --target=ios/arm64 -androidapi 21 -iosversion=$PLATFORM $X $V "${T[@]}" --ldflags="$V $LD" -o "/build/$NAME.framework" ./$PACK_RELPATH
-  fi
 done
 
 # Clean up any leftovers for subsequent build invocations
