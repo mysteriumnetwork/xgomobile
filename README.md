@@ -15,7 +15,7 @@ docker run --rm \
     -e TARGETS=android/. \
     -e EXT_GOPATH=/ext-go/1 \
     -e GO111MODULE=off \
-    mysteriumnetwork/xgomobile:1.18.0 mobilepkg
+    mysteriumnetwork/xgomobile:1.19.6 mobilepkg
 ```
 
 Also see and run ./test.sh to build test examples.
@@ -33,7 +33,7 @@ If you add new go version only when build and push.
 
 Build new image.
 ```
-docker build -t mysteriumnetwork/xgomobile:1.18.0 -f ./docker/go-1.18.0/Dockerfile .
+docker build -t mysteriumnetwork/xgomobile:1.19.6 -f ./docker/go-1.19.6/Dockerfile .
 ```
 
 Update and run tests.
@@ -43,5 +43,5 @@ Update and run tests.
 
 Push image
 ```
-docker push mysteriumnetwork/xgomobile:1.18.0
+docker push mysteriumnetwork/xgomobile:1.19.6
 ```
