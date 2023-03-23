@@ -1,6 +1,6 @@
 FROM mysteriumnetwork/xgomobile:base
 
-MAINTAINER Péter Szilágyi <peterke@gmail.com>
+LABEL maintainer="team@mysterium.network"
 
 ENV CGO_LDFLAGS_ALLOW -fobjc-arc
 ENV GO_VERSION 1196
