@@ -1,16 +1,9 @@
 FROM mysteriumnetwork/xgomobile:base
 
-#MAINTAINER Péter Szilágyi <peterke@gmail.com>
+LABEL maintainer="team@mysterium.network"
 
 ENV CGO_LDFLAGS_ALLOW -fobjc-arc
 ENV GO_VERSION 1196
-
-ADD docker/base/bootstrap_pure.sh /bootstrap_pure.sh
-ENV BOOTSTRAP_PURE /bootstrap_pure.sh
-RUN chmod +x $BOOTSTRAP_PURE
-
-ADD go.mod go.mod
-ADD go.sum go.sum
 
 RUN \
   export ROOT_DIST=https://go.dev/dl/go1.19.6.linux-amd64.tar.gz && \
