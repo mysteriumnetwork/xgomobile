@@ -10,3 +10,5 @@ RUN \
   export ROOT_DIST_SHA=e85278e98f57cdb150fe8409e6e5df5343ecb13cebf03a5d5ff12bd55a80264f && \
   \
 $BOOTSTRAP_PURE
+
+RUN git config --global --add safe.directory /source
