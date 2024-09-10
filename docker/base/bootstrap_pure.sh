@@ -51,10 +51,9 @@ fi
 
 # Install gomobile tool for android/ios frameworks
 echo "Installing gomobile..."
-go get -u golang.org/x/mobile/cmd/gomobile
-cd /go/src/golang.org/x/mobile
-go install ./cmd/gomobile
-go install ./cmd/gobind
+go install golang.org/x/mobile/cmd/gomobile@latest
+go install golang.org/x/mobile/cmd/gobind@latest
+gomobile init
 ln -svt /usr/bin "$(go env GOPATH)"/bin/gomobile
 ln -svt /usr/bin "$(go env GOPATH)"/bin/gobind
 
