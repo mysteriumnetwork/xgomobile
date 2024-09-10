@@ -51,7 +51,7 @@ fi
 
 # Install gomobile tool for android/ios frameworks
 echo "Installing gomobile..."
-GO111MODULE=off go get -u golang.org/x/mobile/cmd/gomobile
+go get -u golang.org/x/mobile/cmd/gomobile
 cd /go/src/golang.org/x/mobile
 go install ./cmd/gomobile
 go install ./cmd/gobind

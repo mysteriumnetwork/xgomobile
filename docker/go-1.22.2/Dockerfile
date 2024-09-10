@@ -2,8 +2,8 @@ FROM mysteriumnetwork/xgomobile:base
 
 LABEL maintainer="team@mysterium.network"
 
-ENV CGO_LDFLAGS_ALLOW -fobjc-arc
-ENV GO_VERSION 1222
+ENV CGO_LDFLAGS_ALLOW="-fobjc-arc"
+ENV GO_VERSION=1222
 
 RUN \
   export ROOT_DIST=https://go.dev/dl/go1.22.2.linux-amd64.tar.gz && \
