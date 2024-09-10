@@ -51,6 +51,7 @@ fi
 
 # Install gomobile tool for android/ios frameworks
 echo "Installing gomobile..."
+export $PATH=$PATH:$(go env GOPATH)/bin
 go install golang.org/x/mobile/cmd/gomobile@latest
 go install golang.org/x/mobile/cmd/gobind@latest
 gomobile init
