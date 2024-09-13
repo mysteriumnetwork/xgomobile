@@ -54,7 +54,7 @@ WORKDIR ${HOME}
 ENV SDK_URL="https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip" \
     ANDROID_HOME="/usr/local/android-sdk" \
     ANDROID_VERSION=31 \
-    ANDROID_BUILD_TOOLS_VERSION=31.0.0
+    ANDROID_BUILD_TOOLS_VERSION=33.0.2
 ENV ANDROID_TOOLS_HOME=$ANDROID_HOME/cmdline-tools \
     ANDROID_SDK=$ANDROID_HOME
 
@@ -78,7 +78,7 @@ RUN $ANDROID_TOOLS_HOME/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_
     "platform-tools"
 
 # Install NDK
-ENV NDK_VER="25.1.8937393"
+ENV NDK_VER="27.1.12297006"
 RUN $ANDROID_TOOLS_HOME/tools/bin/sdkmanager "ndk;$NDK_VER"
 # gomobile adapt new ndk path, so this is no longer needed.
 # RUN ln -sf $ANDROID_HOME/ndk/$NDK_VER $ANDROID_HOME/ndk-bundle
